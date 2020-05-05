@@ -8,9 +8,10 @@ import (
 	"google.golang.org/grpc"
 )
 
+const rpcURL = "localhost:9091"
+
 func getBalance(address string) (value string, err error) {
-	url := "localhost:9091"
-	conn, err := grpc.Dial(url, grpc.WithInsecure())
+	conn, err := grpc.Dial(rpcURL, grpc.WithInsecure())
 	if err != nil {
 		return
 	}
@@ -34,8 +35,7 @@ func getBalance(address string) (value string, err error) {
 }
 
 func getNonce(address string) (value string, err error) {
-	url := "localhost:9091"
-	conn, err := grpc.Dial(url, grpc.WithInsecure())
+	conn, err := grpc.Dial(rpcURL, grpc.WithInsecure())
 	if err != nil {
 		return
 	}
