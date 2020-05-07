@@ -8,8 +8,6 @@ import (
 	"google.golang.org/grpc"
 )
 
-const rpcURL = "localhost:9091"
-
 func getBalance(address string) (value string, err error) {
 	conn, err := grpc.Dial(rpcURL, grpc.WithInsecure())
 	if err != nil {
