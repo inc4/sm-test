@@ -9,25 +9,20 @@ import (
 	_ "github.com/spacemeshos/go-spacemesh/common/util"
 )
 
-const testEcho = "test-ping-smtest"
+const echoText = "test-ping-smtest"
 
 var (
 	//Options
-	flagInfo = flag.Bool("info", false, "(option) info on address")
-	flagEcho = flag.Bool("echo", false, "(option) echo")
 
 	//Params
-	flagAddress = flag.String("address", "", "(param) address")
-	flagRPCURL  = flag.String("rpcurl", "", "(param) rpc url")
+	flagRPCURL = flag.String("rpcurl", "", "(param) rpc url")
 
 	//Debug
-	flagTest = flag.Bool("test", false, "(option) test")
+	flagTestEcho = flag.Bool("test_echo", false, "(option) test echo")
+	flagTestSync = flag.Bool("test_sync", false, "(option) sync")
 )
 
 var rpcURL string
-
-func test() {
-}
 
 func main() {
 	flag.Parse()
@@ -39,16 +34,23 @@ func main() {
 
 	rpcURL = *flagRPCURL
 
-	if *flagEcho {
-		v, err := echo(testEcho)
+	if *flagTestEcho {
+		v, err := testEcho(echoText)
 		if err != nil {
 			fmt.Printf("ERROR: %v\n", err)
 		}
 
-		if v == testEcho {
+		if v == echoText {
 			fmt.Println("ECHO: OK")
 		} else {
 			fmt.Println("ERROR: echo mismatch")
+		}
+	}
+
+	if *flagTestSync {
+		_, err := testSync()
+		if err != nil {
+			fmt.Printf("ERROR: %v\n", err)
 		}
 	}
 }
