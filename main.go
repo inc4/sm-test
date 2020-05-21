@@ -18,10 +18,11 @@ var (
 	flagRPCURL = flag.String("rpcurl", "", "(param) rpc url")
 
 	//Debug
-	flagTestEcho      = flag.Bool("test_echo", false, "(option) test echo")
-	flagTestNodeSync  = flag.Bool("test_nodesync", false, "(option) node sync stream")
-	flagTestMeshLayer = flag.Bool("test_meshlayer", false, "(option) mesh layer stream")
-	flagTestGlobalTx  = flag.Bool("test_globaltx", false, "(option) global transaction receipts")
+	flagTestEcho          = flag.Bool("test_echo", false, "(option) test echo")
+	flagTestNodeSync      = flag.Bool("test_nodesync", false, "(option) node sync stream")
+	flagTestMeshLayer     = flag.Bool("test_meshlayer", false, "(option) mesh layer stream")
+	flagTestGlobalTx      = flag.Bool("test_globaltx", false, "(option) global transaction receipts")
+	flagTestGlobalRewards = flag.Bool("test_globalrewards", false, "(option) global rewards")
 )
 
 var rpcURL string
@@ -71,6 +72,15 @@ func main() {
 
 	if *flagTestGlobalTx {
 		err := testGlobalTx()
+		if err != nil {
+			fmt.Printf("ERROR: %v\n", err)
+		}
+
+		os.Exit(1)
+	}
+
+	if *flagTestGlobalRewards {
+		err := testGlobalRewards()
 		if err != nil {
 			fmt.Printf("ERROR: %v\n", err)
 		}

@@ -159,3 +159,42 @@ func testGlobalTx() (err error) {
 
 	return
 }
+
+func testGlobalRewards() (err error) {
+	err = testStartSync()
+	if err != nil {
+		return
+	}
+
+	conn, err := grpc.Dial(rpcURL, grpc.WithInsecure())
+	if err != nil {
+		return
+	}
+	defer conn.Close()
+
+	c := spacemesh.NewGlobalStateServiceClient(conn)
+
+	stream, err := c.RewardStream(context.Background(), &empty.Empty{})
+	if err != nil {
+		return
+	}
+
+	fmt.Println("testGlobalRewards: Connected, listening ...")
+
+	for {
+		reward, err := stream.Recv()
+		if err != nil {
+			fmt.Printf("Recv(ERROR): %v\n", err)
+
+			break
+		}
+
+		fmt.Printf("Recv(OK): %d - %s - %d\n",
+			reward.GetLayer(),
+			hex.EncodeToString(reward.Coinbase.Address),
+			reward.GetTotal().String(),
+		)
+	}
+
+	return
+}
