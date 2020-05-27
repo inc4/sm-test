@@ -86,6 +86,20 @@ func testNodeSync() (err error) {
 	return
 }
 
+func printTransactions(id int, transactions []*spacemesh.Transaction) {
+	fmt.Printf("[%d] Transactions %d\n", id, len(transactions))
+
+	for i := 0; i < len(transactions); i++ {
+		fmt.Printf("[%d]-[%d] %s %d\n", id, i, transactions[i].GetType().String(), len(transactions[i].GetData()))
+	}
+}
+
+func printBlocks(blocks []*spacemesh.Block) {
+	for i := 0; i < len(blocks); i++ {
+		printTransactions(i, blocks[i].Transactions)
+	}
+}
+
 func testMeshLayer() (err error) {
 	err = testStartSync()
 	if err != nil {
@@ -116,6 +130,9 @@ func testMeshLayer() (err error) {
 		}
 
 		fmt.Printf("Recv(OK): %d - %s\n", layer.GetNumber(), layer.GetStatus())
+		fmt.Printf("Blocks: %d \n", len(layer.GetBlocks()))
+
+		printBlocks(layer.Blocks)
 	}
 
 	return
